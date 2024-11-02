@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie i Rejestracja</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="login-form" class="form">
+            <h2>Logowanie</h2>
+            <form onsubmit="return loginUser()">
+                <input type="text" id="login-username" placeholder="Nazwa użytkownika" required>
+                <input type="password" id="login-password" placeholder="Hasło" required>
+                <button type="submit">Zaloguj się</button>
+                <p>Nie masz konta? <a href="#" onclick="toggleForm()">Zarejestruj się</a></p>
+            </form>
+        </div>
+
+        <div id="register-form" class="form" style="display: none;">
+            <h2>Rejestracja</h2>
+            <form onsubmit="return registerUser()">
+                <input type="text" id="register-username" placeholder="Nazwa użytkownika" required>
+                <input type="password" id="register-password" placeholder="Hasło" required>
+                <button type="submit">Zarejestruj się</button>
+                <p>Masz już konto? <a href="#" onclick="toggleForm()">Zaloguj się</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            const loginForm = document.getElementById("login-form");
+            const registerForm = document.getElementById("register-form");
+            if (loginForm.style.display === "none") {
+                loginForm.style.display = "block";
+                registerForm.style.display = "none";
+            } else {
+                loginForm.style.display = "none";
+                registerForm.style.display = "block";
+            }
+        }
+
+        function registerUser() {
+            const username = document.getElementById("register-username").value;
+            const password = document.getElementById("register-password").value;
+
+            // Sprawdź, czy użytkownik już istnieje
+            if (localStorage.getItem(username)) {
+                alert("Użytkownik już istnieje!");
+                return false;
+            }
+
+            // Zapisz użytkownika w LocalStorage
+            localStorage.setItem(username, password);
+            alert("Rejestracja zakończona pomyślnie!");
+            toggleForm();
+            return false; // Zapobiega przeładowaniu strony
+        }
+
+        function loginUser() {
+            const username = document.getElementById("login-username").value;
+            const password = document.getElementById("login-password").value;
+
+            // Pobierz hasło użytkownika z LocalStorage
+            const storedPassword = localStorage.getItem(username);
+
+            if (storedPassword === password) {
+                alert("Zalogowano pomyślnie!");
+                // Tutaj możesz przekierować użytkownika lub wykonać inną akcję
+            } else {
+                alert("Nieprawidłowa nazwa użytkownika lub hasło.");
+            }
+
+            return false; // Zapobiega przeładowaniu strony
+        }
+    </script>
+</body>
+</html>
